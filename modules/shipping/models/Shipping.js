@@ -12,7 +12,7 @@ class Shipping extends Model {
 Shipping.init(
     {
         fullName: {
-            type: DataTypes.STRING(32),
+            type: DataTypes.STRING(64),
         },
         address: {
             type: DataTypes.TEXT,

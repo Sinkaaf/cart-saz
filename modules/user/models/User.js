@@ -16,7 +16,7 @@ class User extends Model {
 User.init(
     {
         fullName: {
-            type: DataTypes.STRING(32),
+            type: DataTypes.STRING(64),
         },
         phone: {
             type: DataTypes.STRING(15),

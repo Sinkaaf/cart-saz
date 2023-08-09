@@ -30,7 +30,7 @@ app.use(require("./controllers/errorHandele/errorController").get404);
 const PORT = process.env.PORT || 8080;
 
 sequelize
-  .sync()
+  .sync({alter:true})
   .then((result) => {
     console.log(result);
     app.listen(PORT, () => {

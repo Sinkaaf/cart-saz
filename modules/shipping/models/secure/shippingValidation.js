@@ -15,21 +15,21 @@ const schema = {
         },
     },
     address: {
-        type: "text",
+        type: "string",
         trim: true,
         optional: false,
         min: 4,
-        max: 64,
+        max: 255,
         messages: {
-            required: Message("required", "نام و نام خانوادگی"),
-            stringMax: Message("max", "نام و نام خانوادگی", 64),
-            stringMin: Message("min", "نام و نام خانوادگی", 4),
+            required: Message("required", "آدرس"),
+            stringMax: Message("max", "آدرس", 255),
+            stringMin: Message("min", "آدرس", 4),
         },
     },
     postalCode: {
         type: "string",
         trim: true,
-        optional: true,
+        optional: false,
         min: 10,
         max: 10,
         messages: {
@@ -43,7 +43,7 @@ const schema = {
         max: 255,
         optional: true,
         messages: {
-            stringMax: Message("max","طول پیام", 255),
+            stringMax: Message("max","طول توضیحات", 255),
         },
     },
 };

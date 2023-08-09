@@ -5,10 +5,11 @@ const schema = {
     url: {
         type: "string",
         trim: true,
-        optional: true,
+        optional: false,
         min: 4,
         max: 255,
         messages: {
+            required: Message("required", "آدرس تصویر"),
             stringMax: Message("max", "آدرس تصویر", 64),
             stringMin: Message("min", "آدرس تصویر", 4),
         },
@@ -17,8 +18,10 @@ const schema = {
         type: "boolean",
         trim: true,
         optional: false,
-        required: Message("required", "وضعیت تصویر"),
-        number: Message("required","وضعیت تصویر"),
+        messages: {
+            required: Message("required", "وضعیت تصویر"),
+            number: Message("required","وضعیت تصویر"),
+        },
     },
 };
 module.exports = {

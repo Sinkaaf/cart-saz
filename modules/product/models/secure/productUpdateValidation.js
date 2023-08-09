@@ -23,9 +23,9 @@ const schema = {
         type: "number",
         trim: true,
         optional: true,
+        min: 1,
         messages: {
-            stringMin: Message("min", "کد کالا", 10),
-            stringMax: Message("max","کد کالا", 10),
+            stringMin: Message("min", "کد کالا", 1),
         },
     }
 };

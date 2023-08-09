@@ -42,9 +42,6 @@ exports.create = async (req,res,next) =>{
             if(!user){
                 errorHandle(messages.userDoesntExist, statusCodes.notFound);
             }
-            if(user.role != "admin"){
-                errorHandle(messages.forbidden, statusCodes.forbidden);
-            }
             const product = await Product.create({
                 title,
                 price,
@@ -78,9 +75,6 @@ exports.update = async (req,res,next) =>{
             const user = User.findByPk(userId);
             if(!user){
                 errorHandle(messages.userDoesntExist, statusCodes.notFound);
-            }
-            if(user.role != "admin"){
-                errorHandle(messages.forbidden, statusCodes.forbidden);
             }
             let product = await Product.findByPk(productId);
             if(!product){
@@ -117,9 +111,6 @@ exports.delete = async (req,res,next)=>{
         const user = User.findByPk(userId);
         if(!user){
             errorHandle(messages.userDoesntExist, statusCodes.notFound);
-        }
-        if(user.role != "admin"){
-            errorHandle(messages.forbidden, statusCodes.forbidden);
         }
 
         for(let i = 0; i < productIds.length; i++){

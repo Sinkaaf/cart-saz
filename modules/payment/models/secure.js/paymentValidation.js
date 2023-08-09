@@ -20,6 +20,7 @@ const schema = {
         number: Message("required","مبلغ سفارش"),
     },
     isSuccessful: {
+        type: "boolean",
         optional: false,
         messages: {
             required: Message("required", "وضعیت سفارش"),
