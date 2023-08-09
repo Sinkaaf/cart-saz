@@ -1,0 +1,95 @@
+// Product_OrderItem & Product_CartItem should be Deleted
+const {Sequelize} = require("sequelize");
+const sequelize = require("../config/database");
+
+const User = require('../modules/user/models/User');
+const Product = require('../modules/product/models/Product');
+const Role = require('../modules/Role/models/Role');
+const Shipping = require('../modules/shipping/models/Shipping');
+const Cart = require('../modules/cart/models/Cart');
+const Payment = require('../modules/payment/models/Payment');
+const Category = require('../modules/category/models/Category');
+const Order = require('../modules/order/models/Order');
+const Product_Category = require('../modules/product/models/Product_Category');
+// const Product_CartItem = require('../modules/product/models/Product_CartItem');
+// const Product_OrderItem = require('../modules/product/models/Product_OrderItem');
+const ProductImage = require('../modules/product/models/ProductImage');
+const CartItem = require('../modules/cart/models/CartItem');
+const OrderItem = require('../modules/order/models/OrderItem');
+
+
+//  one to many relationships: User & Role
+Role.hasMany(User);
+User.belongsTo(Role);
+
+//  one to many relationships: User & Shipping
+User.hasMany(Shipping);
+Shipping.belongsTo(User);
+
+//  one to many relationships: User & Order
+User.hasMany(Order);
+Order.belongsTo(User);
+
+//  one to many relationships: User & Cart
+User.hasMany(Cart);
+Cart.belongsTo(User);
+
+//  one to many relationships: User & Payment
+User.hasMany(Payment);
+Payment.belongsTo(User);
+
+//  one to many relationships: Product & ProductImage
+Product.hasMany(ProductImage);
+ProductImage.belongsTo(Product);
+
+//  one to many relationships: Category & Category
+Category.hasMany(Category, {as: 'Childs', foreignKey: 'parentId'});
+Category.belongsTo(Category, {as: 'Parent', foreignKey: 'parentId'});
+
+//  super many to many relationships: Product & Category
+Product.belongsToMany(Category, {through: {model:Product_Category,unique: false}});
+Category.belongsToMany(Product, {through: {model:Product_Category,unique: false}});
+Product.hasMany(Product_Category);
+Product_Category.belongsTo(Product);
+Category.hasMany(Product_Category);
+Product_Category.belongsTo(Category);
+
+//  one to many relationships: Product & CartItem
+Product.hasMany(CartItem);
+CartItem.belongsTo(Product);
+//  super many to many relationships: Product & CartItem
+// Product.belongsToMany(CartItem, {through: {model:Product_CartItem,unique: false}});
+// CartItem.belongsToMany(Product, {through: {model:Product_CartItem,unique: false}});
+// Product.hasMany(Product_CartItem);
+// Product_CartItem.belongsTo(Product);
+// CartItem.hasMany(Product_CartItem);
+// Product_CartItem.belongsTo(CartItem);
+
+
+//  one to many relationships: Product & OrderItem
+Product.hasMany(OrderItem);
+OrderItem.belongsTo(Product);
+//  super many to many relationships: Product & OrderItem
+// Product.belongsToMany(OrderItem, {through: {model:Product_OrderItem,unique: false}});
+// OrderItem.belongsToMany(Product, {through: {model:Product_OrderItem,unique: false}});
+// Product.hasMany(Product_OrderItem);
+// Product_OrderItem.belongsTo(Product);
+// OrderItem.hasMany(Product_OrderItem);
+// Product_OrderItem.belongsTo(OrderItem);
+
+
+//  one to many relationships: Order & OrderItem
+Order.hasMany(OrderItem);
+OrderItem.belongsTo(Order);
+
+//Order & Payment
+Order.hasMany(Payment);
+Payment.belongsTo(Order);
+
+//  one to many relationships: Shipping & Order
+Shipping.hasMany(Order);
+Order.belongsTo(Shipping);
+
+//  one to many relationships: Cart & CartItem
+Cart.hasMany(CartItem);
+CartItem.belongsTo(Cart);
