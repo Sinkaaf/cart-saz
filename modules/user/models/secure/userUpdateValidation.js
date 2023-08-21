@@ -1,11 +1,11 @@
 const Validator = require("fastest-validator");
 const Message = require("../../../../messages/messages");
-const v = new Validator();
-const schema = {
+const v3 = new Validator();
+const schema3 = {
     fullName: {
         type: "string",
         trim: true,
-        optional: false,
+        optional: true,
         min: 4,
         max: 64,
         messages: {
@@ -14,23 +14,10 @@ const schema = {
             stringMin: Message("min", "نام و نام خانوادگی", 4),
         },
     },
-    phone: {
-        type: "string",
-        trim: true,
-        optional: false,
-        min: 10,
-        max: 15,
-        pattern: /(0|\+98)?([ ]|,|-|[()]){0,2}9[0|1|2|3|4|9]([ ]|,|-|[()]){0,2}(?:[0-9]([ ]|,|-|[()]){0,2}){8}/,
-        messages: {
-            stringMin: Message("min", "تلفن همراه", 10),
-            stringMax: Message("max", "تلفن همراه", 15),
-            stringPattern: Message("pattern", "تلفن همراه"),
-        },
-    },
     address: {
         type: "string",
         trim: true,
-        optional: false,
+        optional: true,
         min: 4,
         max: 255,
         messages: {
@@ -42,7 +29,7 @@ const schema = {
     postalCode: {
         type: "string",
         trim: true,
-        optional: false,
+        optional: true,
         min: 10,
         max: 10,
         messages: {
@@ -58,16 +45,9 @@ const schema = {
         messages: {
             stringMax: Message("max", "طول توضیحات", 255),
         },
-    },
-    isVerified: {
-        optional: false,
-        messages: {
-            required: Message("required", "وضعیت تایید کاربر"),
-            boolean: "وضعیت نامعتبر",
-        },
     }
 };
 module.exports = {
-    schema,
-    v,
+    schema3,
+    v3,
 };

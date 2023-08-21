@@ -6,8 +6,8 @@ const sequelize = require("./config/database");
 const relation = require("./models/relations");
 const multer  = require('multer');
 const app = express()
-const upload = multer();
-app.use(upload.array());
+// const upload = multer();
+// app.use(upload.array());
 const headers = require("./config/setHeader");
 const bodyParser = require('body-parser')
 const cors = require('./config/setHeader');
@@ -21,6 +21,8 @@ app.use(headers);
 
 //routes
 app.use("/users", require("./modules/user/routes/user"));
+app.use("/products", require("./modules/product/routes/product"));
+app.use("/categories", require("./modules/category/routes/category"));
 
 // handle errors
 app.use(require("./controllers/errorHandele/errorController").getErrors);
@@ -30,7 +32,7 @@ app.use(require("./controllers/errorHandele/errorController").get404);
 const PORT = process.env.PORT || 8080;
 
 sequelize
-  .sync({alter:true})
+  .sync()
   .then((result) => {
     console.log(result);
     app.listen(PORT, () => {

@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
         if (!user){
             errorHandle('چنین کاربری وجود ندارد', '401');
         }
-        if (user.role !== "admin"){
+        if (user.RoleId != 1){
             errorHandle('شما اجازه دسترسی ندارید', '403');
         }
         req.userId = decodedToken.userId;

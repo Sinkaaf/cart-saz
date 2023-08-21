@@ -4,7 +4,7 @@ const sequelize = require("../config/database");
 
 const User = require('../modules/user/models/User');
 const Product = require('../modules/product/models/Product');
-const Role = require('../modules/Role/models/Role');
+const Role = require('../modules/role/models/Role');
 const Shipping = require('../modules/shipping/models/Shipping');
 const Cart = require('../modules/cart/models/Cart');
 const Payment = require('../modules/payment/models/Payment');
@@ -16,7 +16,7 @@ const Product_Category = require('../modules/product/models/Product_Category');
 const ProductImage = require('../modules/product/models/ProductImage');
 const CartItem = require('../modules/cart/models/CartItem');
 const OrderItem = require('../modules/order/models/OrderItem');
-
+const verifyCode = require('../modules/user/models/VerifyCode');
 
 //  one to many relationships: User & Role
 Role.hasMany(User);

@@ -7,27 +7,21 @@ const schema2 = {
         trim: true,
         optional: true,
         min: 4,
-        max: 64,
+        max: 32,
         messages: {
-            stringMax: Message("max", "نام کالا", 64),
-            stringMin: Message("min", "نام کالا", 4),
+            required: Message("required","نام دسته بندی"),
+            stringMin: Message("min", "نام دسته بندی", 4),
+            stringMax: Message("max", "نام دسته بندی", 32),
         },
     },
-    price: {
-        type: "number",
+    image: {
+        type: "string",
         trim: true,
         optional: true,
-        number: Message("required","مبلغ کالا"),
-    },
-    code: {
-        type: "number",
-        trim: true,
-        optional: true,
-        min: 1,
         messages: {
-            stringMin: Message("min", "کد کالا", 1),
+            string: Message("pattern", "آدرس تصویر"),
         },
-    }
+    },
 };
 module.exports = {
     schema2,

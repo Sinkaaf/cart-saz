@@ -23,6 +23,17 @@ exports.messages = {
     productsList : "لیست محصولات",
     productDoesntExist : "محصول وجود ندارد",
     productsDeleted : "محصولات موردنظر با موفقیت حذف گردیدند",
-    //Other
+
+    //Category
+    categoryDoesntExist : "دسته بندی وجود ندارد",
+    categoryList : "لیست دسته بندی ها",
+    categoriesDeleted : "دسته بندی های موردنظر حذف گردیدند",
+
+    //VerifyCode
     wrongCode : "کد اشتباه است",
+    codeDoesntExist : "کد تاییدی برای این کاربر وجود ندارد",
+    codeExpired : "کد منقضی شده است",
+
+    //Upload
+    failToStoreFile : "ذخیره ی عکس با مشکل مواجه شد",
 }
