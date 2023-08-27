@@ -11,9 +11,6 @@ class CartItem extends Model {
 
 CartItem.init(
     {
-        price: {
-            type: DataTypes.BIGINT.UNSIGNED,
-        },
         quantity: {
             type: DataTypes.INTEGER,
         }

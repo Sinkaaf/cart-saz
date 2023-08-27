@@ -17,12 +17,14 @@ exports.messages = {
     userDoesntExist : "کاربر وجود ندارد",
     userUpdated : "کاربر به روزرسانی شد" ,
     userInfo : "اطلاعات کاربر",
+    userList : "لیست کاربران" ,
 
     //Product
     product : "نمایش محصول" ,
     productsList : "لیست محصولات",
     productDoesntExist : "محصول وجود ندارد",
     productsDeleted : "محصولات موردنظر با موفقیت حذف گردیدند",
+    productCodeExist:"محصول دیگری با این کد وجود دارد",
 
     //Category
     categoryDoesntExist : "دسته بندی وجود ندارد",
@@ -36,4 +38,12 @@ exports.messages = {
 
     //Upload
     failToStoreFile : "ذخیره ی عکس با مشکل مواجه شد",
+
+    //Shipping
+    shippingCreated : "آدرس گیرنده ایجاد شد",
+    shippingUpdated : "آدرس بروزرسانی شد",
+    shippingDoesntExist : "آدرس وجود ندارد",
+    shippingList : "لیست آدرس ها" ,
+    shippingInfo : "جزئیات آدرس",
+    shippingsDeleted : "آدرس های موردنظر حذف گردیدند"
 }

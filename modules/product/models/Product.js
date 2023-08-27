@@ -18,12 +18,19 @@ Product.init(
         title: {
             type: DataTypes.STRING(32),
         },
+        description: {
+            type: DataTypes.TEXT
+        },
         price: {
             type: DataTypes.BIGINT.UNSIGNED,
         },
         code: {
             type: DataTypes.INTEGER,
+        },
+        is_vitrin: {
+            type: DataTypes.BOOLEAN,
         }
+
     },
     {
         sequelize,

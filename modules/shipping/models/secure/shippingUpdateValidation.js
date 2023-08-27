@@ -1,7 +1,7 @@
 const Validator = require("fastest-validator");
 const Message = require("../../../../messages/messages");
-const v3 = new Validator();
-const schema3 = {
+const v2 = new Validator();
+const schema2 = {
     fullName: {
         type: "string",
         trim: true,
@@ -48,6 +48,6 @@ const schema3 = {
     }
 };
 module.exports = {
-    schema3,
-    v3,
+    schema2,
+    v2,
 };

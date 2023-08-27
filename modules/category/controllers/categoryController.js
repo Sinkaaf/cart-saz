@@ -10,6 +10,7 @@ const { statusCodes } = require('../../../constant/statusCodes');
 // const Category = require("../../category/models/Category");
 // const Product_Category = require("../models/Product_Category");
 const Category = require("../../category/models/Category");
+const { log } = require("console");
 
 
 exports.create = async (req, res, next) => {
@@ -18,7 +19,8 @@ exports.create = async (req, res, next) => {
     const validate = await Category.categoryValidation(req.body);
     if (validate == true) {
         try {
-            const filePath = `uploads/images/${file.filename}`;
+            console.log(5555555,req.files)
+            const filePath = `images/${file[0].filename}`;
             const category = await Category.create({
                 title,
                 image: filePath

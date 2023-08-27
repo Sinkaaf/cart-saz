@@ -15,6 +15,8 @@ const cors = require('./config/setHeader');
 //body-parser
 app.use(express.json())
 
+app.use("/images", express.static(path.join(__dirname, "uploads", "images")));
+
 // Cross-Origin Resource Sharing for handle headers
 app.use(headers);
 // app.use(cors);
@@ -23,6 +25,7 @@ app.use(headers);
 app.use("/users", require("./modules/user/routes/user"));
 app.use("/products", require("./modules/product/routes/product"));
 app.use("/categories", require("./modules/category/routes/category"));
+app.use("/shippings", require("./modules/shipping/routes/shipping"));
 
 // handle errors
 app.use(require("./controllers/errorHandele/errorController").getErrors);

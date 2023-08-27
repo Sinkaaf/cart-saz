@@ -11,7 +11,14 @@ const schema = {
             required: Message("required","وضعیت سفارش"),
             enum: Message("enum","وضعیت سفارش"),
         },
-    }
+    },
+    total: {
+        type: "number",
+        trim: true,
+        optional: false,
+        required: Message("required", "قیمت نهایی"),
+        number: Message("required", "قیمت نهایی"),
+    },
 };
 module.exports = {
     schema,

@@ -42,10 +42,10 @@ const { tokenMaker } = require("../../../utils/auth");
 // }
 
 exports.create = async (req, res, next) => {
-    let { phone } = req.body;
-    let token;
-    const validate = await User.userPhoneValidation(req.body);
     try {
+        let { phone } = req.body;
+        let token;
+        const validate = await User.userPhoneValidation(req.body);
         if (validate == true) {
             let code = Math.floor(100000 + Math.random() * 900000);
             let user = await User.findOne({ where: { phone } });
@@ -84,10 +84,10 @@ exports.create = async (req, res, next) => {
 }
 
 exports.verify = async (req, res, next) => {
-    let { verifyCodePhone, phone } = req.body
-    const validate = await User.userPhoneValidation(req.body);
-    let confirm = true;
     try {
+        let { verifyCodePhone, phone } = req.body
+        const validate = await User.userValidation(req.body);
+        let confirm = true;
         if (validate == true) {
             let user = await User.findOne({ where: { phone }, attributes: { exclude: ["password"] } });
             if (!user) {
@@ -130,48 +130,48 @@ exports.verify = async (req, res, next) => {
     }
 }
 
-exports.update = async (req, res, next) => {
-    let userId = req.userId;
-    let {
-        fullName,
-        address,
-        postalCode,
-        description
-    } = req.body;
-    const validate = await User.userUpdateValidation(req.body);
-    try {
-        if (validate == true) {
-            let user = await User.findOne({
-                where: { id: userId }, attributes: { exclude: ["password"] }
-            });
-            if (!user) {
-                errorHandle(messages.userDoesntExist, statusCodes.notFound);
-            }
-            await user.update({
-                fullName,
-                address,
-                postalCode,
-                description
-            });
-            res.status(statusCodes.OK).json({ message: messages.userUpdated, user });
-        } else {
-            const errors = [];
-            validate.forEach((err) => {
-                errors.push(err.message)
-            })
-            errorHandle(errors, statusCodes.unprocessableContent);
-        }
-    } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = statusCodes.internalServerError;
-        }
-        next(err)
-    }
-}
+// exports.update = async (req, res, next) => {
+//     let userId = req.userId;
+//     let {
+//         fullName,
+//         address,
+//         postalCode,
+//         description
+//     } = req.body;
+//     const validate = await User.userUpdateValidation(req.body);
+//     try {
+//         if (validate == true) {
+//             let user = await User.findOne({
+//                 where: { id: userId }, attributes: { exclude: ["password"] }
+//             });
+//             if (!user) {
+//                 errorHandle(messages.userDoesntExist, statusCodes.notFound);
+//             }
+//             await user.update({
+//                 fullName,
+//                 address,
+//                 postalCode,
+//                 description
+//             });
+//             res.status(statusCodes.OK).json({ message: messages.userUpdated, user });
+//         } else {
+//             const errors = [];
+//             validate.forEach((err) => {
+//                 errors.push(err.message)
+//             })
+//             errorHandle(errors, statusCodes.unprocessableContent);
+//         }
+//     } catch (err) {
+//         if (!err.statusCode) {
+//             err.statusCode = statusCodes.internalServerError;
+//         }
+//         next(err)
+//     }
+// }
 
 exports.userInfo = async (req, res, next) => {
-    let userId = req.userId;
     try {
+        let userId = req.userId;
         let user = await User.findOne({ where: { id: userId }, attributes: { exclude: ["password"] } });
         if (!user) {
             errorHandle(messages.userDoesntExist, statusCodes.notFound);
@@ -193,7 +193,7 @@ exports.allUsers = async (req, res, next) => {
         if (!users) {
             errorHandle(messages.userDoesntExist, statusCodes.notFound);
         }
-        res.status(200).json({ message: messages.userInfo, users })
+        res.status(200).json({ message: messages.userList, users })
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = statusCodes.internalServerError;
