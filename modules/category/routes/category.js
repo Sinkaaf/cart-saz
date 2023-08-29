@@ -6,7 +6,7 @@ const isAdmin = require('../../../middlewares/is-admin');
 const fileUploader = require('../../../middlewares/uploadMiddleware');
 
 router.get('/',CategoryController.categoryList);
-router.post('/',isAuth,isAdmin,fileUploader,CategoryController.create);
+router.post('/',isAuth,isAdmin,CategoryController.create);
 router.put('/:catId',isAuth,isAdmin,CategoryController.update);
 // router.delete('/',isAuth,isAdmin,CategoryController.delete);
 // router.get('/category/:catId',CategoryController.show);

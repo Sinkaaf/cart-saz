@@ -2,24 +2,20 @@ const { Sequelize, Op, QueryTypes } = require("sequelize");
 const sequelize = require("../../../config/database");
 const multer = require('multer');
 const fs = require('fs');
-// const Product = require('../models/Product');
 const User = require('../../user/models/User');
 const errorHandle = require('../../../controllers/errorHandele/errorCreate');
 const { messages } = require('../../../lang/fa/index');
 const { statusCodes } = require('../../../constant/statusCodes');
-// const Category = require("../../category/models/Category");
-// const Product_Category = require("../models/Product_Category");
 const Category = require("../../category/models/Category");
-const { log } = require("console");
 
 
 exports.create = async (req, res, next) => {
     const { title } = req.body;
-    const file = req.files;
+    const file = req.file;
     const validate = await Category.categoryValidation(req.body);
     if (validate == true) {
         try {
-            console.log(5555555,req.files)
+            // console.log(5555555,req.files)
             const filePath = `images/${file[0].filename}`;
             const category = await Category.create({
                 title,

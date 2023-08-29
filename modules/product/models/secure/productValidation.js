@@ -40,13 +40,12 @@ const schema = {
             stringMin: Message("min", "کد کالا", 1),
         },
     },
-    is_vitrin: {
-        type: "boolean",
+    count: {
+        type: "number",
         trim: true,
         optional: false,
         messages: {
-            required: Message("required", "وضعیت محصول"),
-            number: Message("required","وضعیت محصول"),
+            required: Message("required", "کد کالا"),
         },
     },
 };

@@ -72,6 +72,7 @@ exports.create = async (req, res, next) => {
         const { title, price, code, CategoryId } = req.body;
         const validate = await Product.productValidation(req.body);
         if (validate == true) {
+            //check productCode not exist
             const product_code = await Product.findOne({ where: { code } });
             if (product_code) {
                 errorHandle(messages.productCodeExist, statusCodes.conflict);
@@ -81,6 +82,7 @@ exports.create = async (req, res, next) => {
                     title,
                     price,
                     code,
+                    is_vitrin : false
                 }, { transaction: t });
                 await product.addCategory(CategoryId, { transaction: t })
                 res.status(statusCodes.created).json({ message: messages.createdSuccessfully, product })
@@ -118,7 +120,7 @@ exports.update = async (req, res, next) => {
                 errorHandle(messages.productDoesntExist, statusCodes.notFound);
             }
             const product_code = await Product.findOne({ where: { code } });
-            if (product_code) {
+            if (product_code && product_code.dataValues.id != productId) {
                 errorHandle(messages.productCodeExist, statusCodes.conflict);
             }
             const result = await sequelize.transaction(async (t) => {

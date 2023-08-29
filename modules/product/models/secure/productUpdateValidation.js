@@ -27,6 +27,11 @@ const schema2 = {
         messages: {
             stringMin: Message("min", "کد کالا", 1),
         },
+    },
+    count: {
+        type: "number",
+        trim: true,
+        optional: true,
     }
 };
 module.exports = {

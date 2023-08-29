@@ -15,13 +15,6 @@ const schema = {
             stringPattern: Message("pattern", "تلفن همراه"),
         },
     },
-    isVerified: {
-        optional: false,
-        messages: {
-            required: Message("required", "وضعیت تایید کاربر"),
-            boolean: "وضعیت نامعتبر",
-        },
-    }
 };
 module.exports = {
     schema,

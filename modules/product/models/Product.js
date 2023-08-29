@@ -27,8 +27,12 @@ Product.init(
         code: {
             type: DataTypes.INTEGER,
         },
+        count: {
+            type: DataTypes.INTEGER,
+        },
         is_vitrin: {
             type: DataTypes.BOOLEAN,
+            defaultValue : false
         }
 
     },

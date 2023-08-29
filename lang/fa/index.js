@@ -45,5 +45,8 @@ exports.messages = {
     shippingDoesntExist : "آدرس وجود ندارد",
     shippingList : "لیست آدرس ها" ,
     shippingInfo : "جزئیات آدرس",
-    shippingsDeleted : "آدرس های موردنظر حذف گردیدند"
+    shippingsDeleted : "آدرس های موردنظر حذف گردیدند" ,
+
+    //Cart
+    InsufficientInventory : "موجودی محصول کافی نیست"
 }

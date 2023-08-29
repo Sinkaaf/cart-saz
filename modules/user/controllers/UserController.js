@@ -9,43 +9,12 @@ const { messages } = require('../../../lang/fa/index');
 const { statusCodes } = require('../../../constant/statusCodes');
 const { tokenMaker } = require("../../../utils/auth");
 
-// exports.create = async (req, res, next) => {
-//     let { phone } = req.body;
-//     let token;
-//     const validate = await User.userPhoneValidation(req.body);
-//     try {
-//         if (validate == true) {
-//             let user = await User.findOne({ where: { phone } });
-//             if (!user) {
-//                 let verifyCodePhone = Math.floor(100000 + Math.random() * 900000);
-//                 user = await User.create({
-//                     phone,
-//                     verifyCodePhone,
-//                 })
-//                 token = await tokenMaker(user.id);
-//             }
-//             // await registerSms(user);
-//             res.status(200).json({ message: 'user', user, token })
-//         } else {
-//             const errors = [];
-//             validate.forEach((err) => {
-//                 errors.push(err.message);
-//             })
-//             errorHandle(errors, statusCodes.unprocessableContent);
-//         }
-//     } catch (err) {
-//         if (!err.statusCode) {
-//             err.statusCode = statusCodes.internalServerError;
-//         }
-//         next(err)
-//     }
-// }
 
 exports.create = async (req, res, next) => {
     try {
         let { phone } = req.body;
-        let token;
-        const validate = await User.userPhoneValidation(req.body);
+        let token,newCode;
+        const validate = await User.userValidation(req.body);
         if (validate == true) {
             let code = Math.floor(100000 + Math.random() * 900000);
             let user = await User.findOne({ where: { phone } });
@@ -54,20 +23,21 @@ exports.create = async (req, res, next) => {
                     phone,
                     RoleId:2
                 });
-                await VerifyCode.create({
+                newCode = await VerifyCode.create({
                     code,
                     userId: user.id
                 })
             } else {
-                let verify_code = await VerifyCode.findOne({ where: { userId: user.id } });
-                if ( await this.isExpired(verify_code.dataValues.updatedAt) == 1) {
-                        await verify_code.update({code})
+                newCode = await VerifyCode.findOne({ where: { userId: user.id } });
+                if ( await this.isExpired(newCode.dataValues.updatedAt) == 1) {
+                       newCode = await newCode.update({code})
                 }
             }
             //sms code 
             token = await tokenMaker(user.id);
+            result = {user,token,code :newCode.code}
             // await registerSms(user);
-            res.status(200).json({ message: 'user', user, token })
+            res.status(200).json({ message: 'user', result })
         } else {
             const errors = [];
             validate.forEach((err) => {
