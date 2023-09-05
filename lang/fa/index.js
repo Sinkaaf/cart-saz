@@ -50,7 +50,12 @@ exports.messages = {
     //Cart
     insufficientInventory : "موجودی محصول کافی نیست",
     cartDoesntExist : "سبد خرید خالی است",
-    cartItems : "آیتم های سبد خرید"
+    cartItems : "آیتم های سبد خرید",
+
+    //Order
+    order : "جزئیات سفارش" ,
+    orders : "لیست سفارشات" ,
+
     
 
 }

@@ -12,8 +12,8 @@ Order.init(
     {
         status: {
             // درانتظار پرداخت - در حال انجام - در انتظار بررسی - تکمیل شده - لغو شده - مسترد شده - ناموفق
-            type: DataTypes.ENUM('awaiting_Payment','doing','awaiting_review','done','canceled','returned','unsuccessfull'),
-            defaultValue: 'awaiting_review',
+            type: DataTypes.ENUM('awaiting_payment','doing','awaiting_review','done','canceled','returned','unsuccessfull'),
+            defaultValue: 'awaiting_payment',
         },
         total: {
             type: DataTypes.BIGINT.UNSIGNED,

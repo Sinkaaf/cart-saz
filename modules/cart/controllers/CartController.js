@@ -12,8 +12,8 @@ const errorHandle = require('../../../controllers/errorHandele/errorCreate');
 exports.index = async (req, res, next) => {
     try {
         const userId = req.userId;
-        const cart = Cart.findAll({ where: { UserId: userId } });
-        res.status(statusCodes.OK).json({ message: messages.cartItems })
+        const cartItems = await Cart.findAll({ where: { UserId: userId } });
+        res.status(statusCodes.OK).json({ message: messages.cartItems, cartItems })
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = statusCodes.internalServerError;
@@ -64,7 +64,7 @@ exports.update = async (req, res, next) => {
         const { quantity } = req.body;
         const validate = await Cart.cartUpdateValidation(req.body);
         if (validate == true) {
-            let cart = await Cart.findOne({ where: { id:cartId } });
+            let cart = await Cart.findOne({ where: { id: cartId } });
             if (!cart) {
                 errorHandle(messages.cartDoesntExist, statusCodes.notFound);
             }

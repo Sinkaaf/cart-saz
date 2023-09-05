@@ -4,20 +4,12 @@ const v = new Validator();
 const schema = {
     status: {
         type: "enum",
-        values: ['awaiting_Payment','doing','awaiting_review','done','canceled','returned','unsuccessfull'],
+        values: ['awaiting_payment','doing','awaiting_review','done','canceled','returned','unsuccessfull'],
         trim: true,
-        optional: false,
+        optional: true,
         messages: {
-            required: Message("required","وضعیت سفارش"),
             enum: Message("enum","وضعیت سفارش"),
         },
-    },
-    total: {
-        type: "number",
-        trim: true,
-        optional: false,
-        required: Message("required", "قیمت نهایی"),
-        number: Message("required", "قیمت نهایی"),
     },
 };
 module.exports = {
