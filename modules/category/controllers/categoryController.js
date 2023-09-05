@@ -54,7 +54,7 @@ exports.update = async (req, res, next) => {
             category.update({
                 title
             })
-            res.status(statusCodes.created).json({ message: messages.createdSuccessfully, category })
+            res.status(statusCodes.OK).json({ message: messages.updatedSuccessfully, category })
 
         } catch (err) {
             if (!err.statusCode) {

@@ -26,6 +26,7 @@ app.use("/users", require("./modules/user/routes/user"));
 app.use("/products", require("./modules/product/routes/product"));
 app.use("/categories", require("./modules/category/routes/category"));
 app.use("/shippings", require("./modules/shipping/routes/shipping"));
+app.use("/carts", require("./modules/cart/routes/cart"));
 
 // handle errors
 app.use(require("./controllers/errorHandele/errorController").getErrors);

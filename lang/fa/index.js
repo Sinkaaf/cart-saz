@@ -48,5 +48,9 @@ exports.messages = {
     shippingsDeleted : "آدرس های موردنظر حذف گردیدند" ,
 
     //Cart
-    InsufficientInventory : "موجودی محصول کافی نیست"
+    insufficientInventory : "موجودی محصول کافی نیست",
+    cartDoesntExist : "سبد خرید خالی است",
+    cartItems : "آیتم های سبد خرید"
+    
+
 }

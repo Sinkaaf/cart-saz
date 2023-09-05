@@ -66,10 +66,9 @@ exports.show = async (req, res, next) => {
     }
 }
 
-//todo : unique code for product???
 exports.create = async (req, res, next) => {
     try {
-        const { title, price, code, CategoryId } = req.body;
+        const { title, price, code, count, CategoryId } = req.body;
         const validate = await Product.productValidation(req.body);
         if (validate == true) {
             //check productCode not exist
@@ -82,7 +81,8 @@ exports.create = async (req, res, next) => {
                     title,
                     price,
                     code,
-                    is_vitrin : false
+                    count,
+                    is_vitrin: false
                 }, { transaction: t });
                 await product.addCategory(CategoryId, { transaction: t })
                 res.status(statusCodes.created).json({ message: messages.createdSuccessfully, product })
@@ -107,7 +107,7 @@ exports.create = async (req, res, next) => {
 exports.update = async (req, res, next) => {
     try {
         const productId = req.params.productId
-        const { title, price, code, CategoryId } = req.body;
+        const { title, price, code, count , CategoryId } = req.body;
         const validate = await Product.productUpdateValidation(req.body);
         if (validate == true) {
             let product = await Product.findOne({
@@ -127,7 +127,8 @@ exports.update = async (req, res, next) => {
                 await product.update({
                     title,
                     price,
-                    code
+                    code,
+                    count
                 }, { transaction: t })
                 await product.removeCategories(product.Categories, { transaction: t });
                 await product.addCategory(CategoryId, { transaction: t });

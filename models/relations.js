@@ -1,4 +1,3 @@
-// Product_OrderItem & Product_CartItem should be Deleted
 const {Sequelize} = require("sequelize");
 const sequelize = require("../config/database");
 
@@ -11,10 +10,8 @@ const Payment = require('../modules/payment/models/Payment');
 const Category = require('../modules/category/models/Category');
 const Order = require('../modules/order/models/Order');
 const Product_Category = require('../modules/product/models/Product_Category');
-// const Product_CartItem = require('../modules/product/models/Product_CartItem');
-// const Product_OrderItem = require('../modules/product/models/Product_OrderItem');
 const ProductImage = require('../modules/product/models/ProductImage');
-const CartItem = require('../modules/cart/models/CartItem');
+// const CartItem = require('../modules/cart/models/CartItem');
 const OrderItem = require('../modules/order/models/OrderItem');
 const verifyCode = require('../modules/user/models/VerifyCode');
 
@@ -54,16 +51,9 @@ Product_Category.belongsTo(Product);
 Category.hasMany(Product_Category);
 Product_Category.belongsTo(Category);
 
-//  one to many relationships: Product & CartItem
-Product.hasMany(CartItem);
-CartItem.belongsTo(Product);
-//  super many to many relationships: Product & CartItem
-// Product.belongsToMany(CartItem, {through: {model:Product_CartItem,unique: false}});
-// CartItem.belongsToMany(Product, {through: {model:Product_CartItem,unique: false}});
-// Product.hasMany(Product_CartItem);
-// Product_CartItem.belongsTo(Product);
-// CartItem.hasMany(Product_CartItem);
-// Product_CartItem.belongsTo(CartItem);
+//  one to many relationships: Product & Cart
+Product.hasMany(Cart);
+Cart.belongsTo(Product);
 
 
 //  one to many relationships: Product & OrderItem
@@ -90,6 +80,3 @@ Payment.belongsTo(Order);
 Shipping.hasMany(Order);
 Order.belongsTo(Shipping);
 
-//  one to many relationships: Cart & CartItem
-Cart.hasMany(CartItem);
-CartItem.belongsTo(Cart);
