@@ -15,9 +15,7 @@ Order.init(
             type: DataTypes.ENUM('awaiting_payment','doing','awaiting_review','done','canceled','returned','unsuccessfull'),
             defaultValue: 'awaiting_payment',
         },
-        total: {
-            type: DataTypes.BIGINT.UNSIGNED,
-        },
+       
     },
     {
         sequelize,

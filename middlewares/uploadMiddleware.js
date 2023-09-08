@@ -7,9 +7,10 @@ const sharp = require("sharp");
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (req.originalUrl == "/category") {
+    if (req.originalUrl == "/categories") {
+      
       cb(null, 'uploads/images/category');
-    } else if (req.originalUrl == "/product") {
+    } else if (req.originalUrl == "/products") {
       cb(null, 'uploads/images/product');
     }
   },

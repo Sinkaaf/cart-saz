@@ -7,7 +7,9 @@ const errorHandle = require('../../../controllers/errorHandele/errorCreate');
 const { messages } = require('../../../lang/fa/index');
 const { statusCodes } = require('../../../constant/statusCodes');
 const Product_Category = require("../models/Product_Category");
+// const Product_Image = require('../models/ProductImage');
 const Category = require("../../category/models/Category");
+const ProductImage = require("../models/ProductImage");
 
 
 exports.productList = async (req, res, next) => {
@@ -68,7 +70,10 @@ exports.show = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
     try {
-        const { title, price, code, count, CategoryId } = req.body;
+        let { title, price, code, count, CategoryId } = req.body;
+        CategoryId = CategoryId.replace(/'/g, '"');
+        CategoryId = JSON.parse(CategoryId);
+        const files = req.files;
         const validate = await Product.productValidation(req.body);
         if (validate == true) {
             //check productCode not exist
@@ -84,7 +89,14 @@ exports.create = async (req, res, next) => {
                     count,
                     is_vitrin: false
                 }, { transaction: t });
-                await product.addCategory(CategoryId, { transaction: t })
+                await product.addCategory(CategoryId, { transaction: t });
+                for (const file of files) {
+                    const filePath = `images/${file.filename}`;
+                    await ProductImage.create({
+                        url : filePath,
+                        ProductId : product.id
+                    }, { transaction: t })
+                }
                 res.status(statusCodes.created).json({ message: messages.createdSuccessfully, product })
             });
 
@@ -107,13 +119,14 @@ exports.create = async (req, res, next) => {
 exports.update = async (req, res, next) => {
     try {
         const productId = req.params.productId
-        const { title, price, code, count , CategoryId } = req.body;
+        const { title, price, code, count, CategoryId } = req.body;
         const validate = await Product.productUpdateValidation(req.body);
         if (validate == true) {
             let product = await Product.findOne({
                 where: { id: productId },
                 include: {
                     model: Category,
+                    model : ProductImage
                 }
             });
             if (!product) {
@@ -132,6 +145,11 @@ exports.update = async (req, res, next) => {
                 }, { transaction: t })
                 await product.removeCategories(product.Categories, { transaction: t });
                 await product.addCategory(CategoryId, { transaction: t });
+                // clearFile(product.imageUrl);
+                await ProductImage.destroy({where:{ProductId:productId}})
+                
+                // await product.addProductImages()
+                // await product.dataValues.ProductImages.
 
                 res.status(statusCodes.OK).json({ message: messages.createdSuccessfully, product })
             });

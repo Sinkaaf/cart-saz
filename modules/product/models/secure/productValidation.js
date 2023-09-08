@@ -9,9 +9,9 @@ const schema = {
         min: 4,
         max: 64,
         messages: {
-            required: Message("required", "نام کالا"),
-            stringMax: Message("max", "نام کالا", 64),
-            stringMin: Message("min", "نام کالا", 4),
+            required: Message("required", "نام محصول"),
+            stringMax: Message("max", "نام محصول", 64),
+            stringMin: Message("min", "نام محصول", 4),
         },
     },   
     description: {
@@ -24,28 +24,35 @@ const schema = {
         },
     },
     price: {
-        type: "number",
+        type: "string",
         trim: true,
         optional: false,
-        required: Message("required", "مبلغ کالا"),
-        number: Message("required","مبلغ کالا"),
+        required: Message("required", "مبلغ محصول"),
+        pattern: /^\d+$/,
+        messages: {
+            stringPattern: Message("pattern", "مبلغ محصول"),
+        },
     },
     code: {
-        type: "number",
+        type: "string",
         trim: true,
         optional: false,
         min: 1,
+        pattern: /^\d+$/,
         messages: {
-            required: Message("required", "کد کالا"),
-            stringMin: Message("min", "کد کالا", 1),
+            required: Message("required", "کد محصول"),
+            stringMin: Message("min", "کد محصول", 1),
+            stringPattern: Message("pattern", "کد محصول"),
         },
     },
     count: {
-        type: "number",
+        type: "string",
         trim: true,
         optional: false,
+        pattern: /^\d+$/,
         messages: {
-            required: Message("required", "کد کالا"),
+            required: Message("required", "تعداد محصول"),
+            stringPattern: Message("pattern", "تعداد محصول"),
         },
     },
 };

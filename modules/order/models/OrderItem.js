@@ -16,6 +16,15 @@ OrderItem.init(
         },
         quantity: {
             type: DataTypes.INTEGER,
+        },
+        total: {
+            type: DataTypes.VIRTUAL,
+            get() {
+                return this.price * this.quantity ;
+            },
+            set(value) {
+                throw new Error('Do not try to set the `total` value!');
+            }
         }
     },
     {

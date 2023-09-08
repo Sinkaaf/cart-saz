@@ -1,6 +1,6 @@
 const { Sequelize, Op, QueryTypes } = require("sequelize");
 const sequelize = require("../../../config/database");
-const multer = require('multer');
+const {clearFile,editorImage} = require("../../../middlewares/uploadMiddleware");
 const fs = require('fs');
 const User = require('../../user/models/User');
 const errorHandle = require('../../../controllers/errorHandele/errorCreate');
@@ -13,31 +13,29 @@ exports.create = async (req, res, next) => {
     const { title } = req.body;
     const file = req.file;
     const validate = await Category.categoryValidation(req.body);
-    if (validate == true) {
-        try {
-            // console.log(5555555,req.files)
-            const filePath = `images/${file[0].filename}`;
+    try {
+        if (validate == true) {
+            const filePath = `images/${file.filename}`;
             const category = await Category.create({
                 title,
                 image: filePath
             });
 
             res.status(statusCodes.created).json({ message: messages.createdSuccessfully, category })
+        } else {
+            const errors = [];
+            validate.forEach((err) => {
+                errors.push(err.message);
+            })
+            errorHandle(errors, statusCodes.unprocessableContent);
 
-        } catch (err) {
-            if (!err.statusCode) {
-                err.statusCode = statusCodes.internalServerError;
-            }
-            next(err)
         }
-    } else {
-        const errors = [];
-        validate.forEach((err) => {
-            errors.push(err.message);
-        })
-        errorHandle(errors, statusCodes.unprocessableContent);
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = statusCodes.internalServerError;
+        }
+        next(err)
     }
-
 }
 
 exports.update = async (req, res, next) => {
@@ -76,7 +74,7 @@ exports.categoryList = async (req, res, next) => {
         const categories = await Category.findAll({
             include: {
                 model: Category,
-                as:"Parent"
+                as: "Parent"
             }
         });
         res.status(statusCodes.OK).json({ message: messages.categoryList, categories })
