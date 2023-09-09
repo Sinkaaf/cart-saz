@@ -15,7 +15,7 @@ exports.create = async (req, res, next) => {
     const validate = await Category.categoryValidation(req.body);
     try {
         if (validate == true) {
-            const filePath = `images/${file.filename}`;
+            const filePath = `images/category/${file.filename}`;
             const category = await Category.create({
                 title,
                 image: filePath

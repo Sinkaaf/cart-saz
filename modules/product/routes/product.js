@@ -9,7 +9,7 @@ const upload = multer({ storage: fileStorage , fileFilter: fileFilter})
 
 router.get('/',ProductController.productList);
 router.post('/',isAuth,isAdmin,upload.array('files',10),ProductController.create);
-router.put('/:productId',isAuth,isAdmin,ProductController.update);
+router.put('/:productId',isAuth,isAdmin,upload.array('files',10),ProductController.update);
 router.delete('/',isAuth,isAdmin,ProductController.delete);
 router.get('/product/:productId',ProductController.show);
 

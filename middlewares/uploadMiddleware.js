@@ -6,11 +6,14 @@ const sharp = require("sharp");
 
 
 const fileStorage = multer.diskStorage({
+  
   destination: (req, file, cb) => {
     if (req.originalUrl == "/categories") {
       
       cb(null, 'uploads/images/category');
-    } else if (req.originalUrl == "/products") {
+      // برای اپدیت چطوری ایدی محصول و انتهای ادرس اضافه کنیم؟
+    // } else if (req.originalUrl == "/products" || req.originalUrl == "/products/:productId") {
+    } else {
       cb(null, 'uploads/images/product');
     }
   },
@@ -30,7 +33,7 @@ const fileFilter = async (req, file, cb) => {
     cb(null, false);
   }
 };
-const clearFile = filePath => {
+const clearFile = (filePath , folder) => {
   filePath = path.join(__dirname, '..', 'uploads', filePath);
   fs.unlink(filePath, err => console.log(err));
 };

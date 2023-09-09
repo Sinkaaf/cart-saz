@@ -10,6 +10,7 @@ const Product_Category = require("../models/Product_Category");
 // const Product_Image = require('../models/ProductImage');
 const Category = require("../../category/models/Category");
 const ProductImage = require("../models/ProductImage");
+const { clearFile } = require("../../../middlewares/uploadMiddleware");
 
 
 exports.productList = async (req, res, next) => {
@@ -51,9 +52,11 @@ exports.show = async (req, res, next) => {
     try {
         const product = await Product.findOne({
             where: { id: productId },
-            include: {
-                model: Category
-            }
+            include: [{
+                model: Category,
+            }, {
+                model: ProductImage
+            }]
         })
         if (!product) {
             errorHandle(messages.productDoesntExist, statusCodes.notFound);
@@ -91,10 +94,10 @@ exports.create = async (req, res, next) => {
                 }, { transaction: t });
                 await product.addCategory(CategoryId, { transaction: t });
                 for (const file of files) {
-                    const filePath = `images/${file.filename}`;
+                    const filePath = `images/product/${file.filename}`;
                     await ProductImage.create({
-                        url : filePath,
-                        ProductId : product.id
+                        url: filePath,
+                        ProductId: product.id
                     }, { transaction: t })
                 }
                 res.status(statusCodes.created).json({ message: messages.createdSuccessfully, product })
@@ -119,22 +122,31 @@ exports.create = async (req, res, next) => {
 exports.update = async (req, res, next) => {
     try {
         const productId = req.params.productId
-        const { title, price, code, count, CategoryId } = req.body;
+        let { title, price, code, count, CategoryId, deletedImages } = req.body;
+        if (CategoryId) {
+            CategoryId = CategoryId.replace(/'/g, '"');
+            CategoryId = JSON.parse(CategoryId);
+        }
         const validate = await Product.productUpdateValidation(req.body);
         if (validate == true) {
-            let product = await Product.findOne({
+            const newFiles = req.files;
+            const product = await Product.findOne({
                 where: { id: productId },
-                include: {
+                include: [{
                     model: Category,
-                    model : ProductImage
-                }
-            });
+                }, {
+                    model: ProductImage
+                }]
+            })
+
             if (!product) {
                 errorHandle(messages.productDoesntExist, statusCodes.notFound);
             }
-            const product_code = await Product.findOne({ where: { code } });
-            if (product_code && product_code.dataValues.id != productId) {
-                errorHandle(messages.productCodeExist, statusCodes.conflict);
+            if(code){
+                const product_code = await Product.findOne({ where: { code } });
+                if (product_code && product_code.dataValues.id != productId) {
+                    errorHandle(messages.productCodeExist, statusCodes.conflict);
+                }
             }
             const result = await sequelize.transaction(async (t) => {
                 await product.update({
@@ -143,14 +155,37 @@ exports.update = async (req, res, next) => {
                     code,
                     count
                 }, { transaction: t })
-                await product.removeCategories(product.Categories, { transaction: t });
+                await product.removeCategories(product.dataValues.Categories, { transaction: t });
                 await product.addCategory(CategoryId, { transaction: t });
-                // clearFile(product.imageUrl);
-                await ProductImage.destroy({where:{ProductId:productId}})
-                
-                // await product.addProductImages()
-                // await product.dataValues.ProductImages.
+                if (deletedImages) {
+                    deletedImages = deletedImages.replace(/'/g, '"');
+                    deletedImages = JSON.parse(deletedImages);
+                    for (const deletedImage of deletedImages) {
+                        const d_product = await ProductImage.findOne({ where: { id: deletedImage } }, { transaction: t })
+                        if (!d_product) {
+                            errorHandle(messages.fileDoesntExist, statusCodes.notFound);
+                        }
+                        clearFile(d_product.url);
+                        await d_product.destroy();
+                    }
+                }
 
+                // deletedImages.map(async (deletedImage) => {
+                //     const d_product = await ProductImage.findOne({ where: { id: deletedImage } })
+                //     if (!d_product) {
+                //         errorHandle(messages.fileDoesntExist, statusCodes.notFound);
+                //     }
+                //     clearFile(d_product.url);
+                //     d_product.destroy();
+
+                // }, { transaction: t })
+                await newFiles.map(async (newFile) => {
+                    const filePath = `images/product/${newFile.filename}`;
+                    await ProductImage.create({
+                        url: filePath,
+                        ProductId: product.id
+                    },)
+                }, { transaction: t })
                 res.status(statusCodes.OK).json({ message: messages.createdSuccessfully, product })
             });
 

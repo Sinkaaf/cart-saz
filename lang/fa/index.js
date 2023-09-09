@@ -38,6 +38,7 @@ exports.messages = {
 
     //Upload
     failToStoreFile: "ذخیره ی عکس با مشکل مواجه شد",
+    fileDoesntExist: "فایل موردنظر وجود ندارد",
 
     //Shipping
     shippingCreated: "آدرس گیرنده ایجاد شد",
@@ -59,7 +60,7 @@ exports.messages = {
     //Payment
     successfullPayment: "تراکنش موفق",
     unsuccessfullPayment: "تراکنش ناموفق",
-    shopping : "محصولات خریداری شده" ,
+    shopping: "محصولات خریداری شده",
 
 
 

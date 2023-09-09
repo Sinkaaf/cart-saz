@@ -9,29 +9,39 @@ const schema2 = {
         min: 4,
         max: 64,
         messages: {
-            stringMax: Message("max", "نام کالا", 64),
-            stringMin: Message("min", "نام کالا", 4),
+            stringMax: Message("max", "نام محصول", 64),
+            stringMin: Message("min", "نام محصول", 4),
         },
     },
     price: {
-        type: "number",
+        type: "string",
         trim: true,
         optional: true,
-        number: Message("required","مبلغ کالا"),
+        number: Message("required","مبلغ محصول"),
+        pattern: /^\d+$/,
+        messages: {
+            stringPattern: Message("pattern", "مبلغ محصول"),
+        },
     },
     code: {
-        type: "number",
+        type: "string",
         trim: true,
         optional: true,
         min: 1,
+        pattern: /^\d+$/,
         messages: {
-            stringMin: Message("min", "کد کالا", 1),
+            stringMin: Message("min", "کد محصول", 1),
+            stringPattern: Message("pattern", "مبلغ محصول"),
         },
     },
     count: {
-        type: "number",
+        type: "string",
         trim: true,
         optional: true,
+        pattern: /^\d+$/,
+        messages: {
+            stringPattern: Message("pattern", "مبلغ محصول"),
+        },
     }
 };
 module.exports = {
