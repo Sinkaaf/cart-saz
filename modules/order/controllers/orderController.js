@@ -14,7 +14,7 @@ const errorHandle = require('../../../controllers/errorHandele/errorCreate');
 exports.orderList = async (req, res, next) => {
     try {
         const userId = req.userId;
-        const orders = await Order.findAll({ where: { UserId: userId }, include: { model: OrderItem } });
+        const orders = await Order.findAll({ where: { UserId: userId }, include: { model: OrderItem , include:{model:Product}} });
         res.status(statusCodes.OK).json({ message: messages.orders, orders })
     } catch (err) {
         if (!err.statusCode) {
@@ -30,11 +30,10 @@ exports.create = async (req, res, next) => {
         const userId = req.userId;
         const validate = await Order.orderValidation(req.body);
         if (validate == true) {
-            const carts = await Cart.findAll({ where: { UserId: userId }, include: { model: Product } });
-            if (!carts) {
+            const carts = await Cart.findAll({ where: { UserId: userId } , include:{model:Product}});
+            if (carts === undefined || carts.length == 0) {
                 errorHandle(messages.cartDoesntExist, statusCodes.notFound);
             }
-
             const result = await sequelize.transaction(async (t) => {
                 let order = await Order.create({
                     UserId: userId,
@@ -55,7 +54,8 @@ exports.create = async (req, res, next) => {
 
                     await product.update({
                         count: product.count - cart.quantity,
-                    }, { transaction: t })
+                    }, { transaction: t });
+                    await Cart.destroy({ where: { UserId: userId } }, { transaction: t })
                 }
             });
             res.status(statusCodes.OK).json({ message: messages.createdSuccessfully })
@@ -83,7 +83,7 @@ exports.show = async (req, res, next) => {
         for (const orderItem of order.dataValues.OrderItems) {
             total = orderItem.total + total;
         }
-        res.status(statusCodes.OK).json({ message: messages.order, order,total })
+        res.status(statusCodes.OK).json({ message: messages.order, order, total })
     } catch (err) {
         if (!err.statusCode) {
             err.statusCode = statusCodes.internalServerError;

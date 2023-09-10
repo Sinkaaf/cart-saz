@@ -28,9 +28,13 @@ exports.create = async (req, res, next) => {
         const userId = req.userId;
         const validate = await Cart.cartValidation(req.body);
         if (validate == true) {
-            let product = await Product.findOne({ productId });
+            let product = await Product.findOne({ where:{id:productId} });
             if (!product) {
                 errorHandle(messages.productDoesntExist, statusCodes.notFound);
+            }
+            let cartExist = await Cart.findOne({where:{ProductId:productId , UserId : userId}})
+            if(cartExist){
+                errorHandle(messages.cartProductExist, statusCodes.conflict);
             }
             if (quantity > product.count) {
                 errorHandle(messages.insufficientInventory, statusCodes.badRequest)

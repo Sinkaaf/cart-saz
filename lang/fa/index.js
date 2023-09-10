@@ -52,6 +52,7 @@ exports.messages = {
     insufficientInventory: "موجودی محصول کافی نیست",
     cartDoesntExist: "سبد خرید خالی است",
     cartItems: "آیتم های سبد خرید",
+    cartProductExist : "این محصول از قبل در سبد خرید وجوددارد",
 
     //Order
     order: "جزئیات سفارش",

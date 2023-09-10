@@ -35,6 +35,7 @@ app.use("/shippings", require("./modules/shipping/routes/shipping"));
 app.use("/carts", require("./modules/cart/routes/cart"));
 app.use("/orders", require("./modules/order/routes/order"));
 app.use("/payments", require("./modules/payment/routes/paymant"));
+app.use("/admin", require("./modules//admin/routes/admin"));
 
 // handle errors
 app.use(require("./controllers/errorHandele/errorController").getErrors);

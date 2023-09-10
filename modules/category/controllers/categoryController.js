@@ -1,6 +1,6 @@
 const { Sequelize, Op, QueryTypes } = require("sequelize");
 const sequelize = require("../../../config/database");
-const {clearFile,editorImage} = require("../../../middlewares/uploadMiddleware");
+const { clearFile, editorImage } = require("../../../middlewares/uploadMiddleware");
 const fs = require('fs');
 const User = require('../../user/models/User');
 const errorHandle = require('../../../controllers/errorHandele/errorCreate');
@@ -10,10 +10,10 @@ const Category = require("../../category/models/Category");
 
 
 exports.create = async (req, res, next) => {
-    const { title } = req.body;
-    const file = req.file;
-    const validate = await Category.categoryValidation(req.body);
     try {
+        const { title } = req.body;
+        const file = req.file;
+        const validate = await Category.categoryValidation(req.body);
         if (validate == true) {
             const filePath = `images/category/${file.filename}`;
             const category = await Category.create({
@@ -39,33 +39,41 @@ exports.create = async (req, res, next) => {
 }
 
 exports.update = async (req, res, next) => {
-    const { title } = req.body;
-    const catId = req.params.catId
-    // const file = req.files;
-    const validate = await Category.categoryUpdateValidation(req.body);
-    if (validate == true) {
-        try {
+    try {
+        const { title, deletedFile } = req.body;
+        const catId = req.params.catId
+        const newFile = req.file;
+        let filePath;
+        const validate = await Category.categoryUpdateValidation(req.body);
+        if (validate == true) {
             let category = await Category.findOne({ id: catId });
             if (!category) {
                 errorHandle(messages.categoryDoesntExist, statusCodes.notFound);
             }
+            if (category.url) {
+                clearFile(category.url);
+            }
+            if(newFile){
+                 filePath = `images/category/${newFile.filename}`;
+            }
             category.update({
-                title
+                title,
+                image:filePath
             })
             res.status(statusCodes.OK).json({ message: messages.updatedSuccessfully, category })
 
-        } catch (err) {
-            if (!err.statusCode) {
-                err.statusCode = statusCodes.internalServerError;
-            }
-            next(err)
+        } else {
+            const errors = [];
+            validate.forEach((err) => {
+                errors.push(err.message);
+            })
+            errorHandle(errors, statusCodes.unprocessableContent);
         }
-    } else {
-        const errors = [];
-        validate.forEach((err) => {
-            errors.push(err.message);
-        })
-        errorHandle(errors, statusCodes.unprocessableContent);
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = statusCodes.internalServerError;
+        }
+        next(err)
     }
 }
 
